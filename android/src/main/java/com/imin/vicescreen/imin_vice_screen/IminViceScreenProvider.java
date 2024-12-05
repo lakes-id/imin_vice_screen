@@ -41,7 +41,7 @@ public class IminViceScreenProvider {
 
         //媒体设备监听
         if (mediaRouter != null) {
-            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
+//            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
         }
         if (showSubScreen) {
             showSubDisplay();
@@ -143,6 +143,11 @@ public class IminViceScreenProvider {
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public boolean supportViceScreen() {
         return getPresentationDisplay() != null;
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public boolean isDoubleScreenOpen() {
+        return presentation != null && presentation.isShowing();
     }
 
     /**

@@ -52,6 +52,11 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
     await methodChannel.invokeMethod<void>('requestOverlayPermission');
   }
 
+  @override
+  Future<bool?> isDoubleScreenOpen() async {
+    return await methodChannel.invokeMethod<bool>('isDoubleScreenOpen');
+  }
+
   ///打开副屏
   @override
   Future<void> doubleScreenOpen() async {
@@ -66,15 +71,13 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
 
   ///发送消息到副屏
   @override
-  Future<void> sendMsgToViceScreen(String method,
-      {Map<String, dynamic>? params}) async {
+  Future<void> sendMsgToViceScreen(String method, {Map<String, dynamic>? params}) async {
     await methodChannel.invokeMethod<void>(method, params ?? {});
   }
 
   ///发送消息到主屏
   @override
-  Future<void> sendMsgToMainScreen(String method,
-      {Map<String, dynamic>? params}) async {
+  Future<void> sendMsgToMainScreen(String method, {Map<String, dynamic>? params}) async {
     await viceMethodChannel.invokeMethod<void>(method, params ?? {});
   }
 
@@ -95,8 +98,7 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
   }
 
   @override
-  Future<void> sendLCDMultiString(
-      {required List<String> contents, required List<int> aligns}) async {
+  Future<void> sendLCDMultiString({required List<String> contents, required List<int> aligns}) async {
     Map<String, dynamic> arguments = <String, dynamic>{
       "contents": json.encode(contents),
       "aligns": json.encode(aligns),
@@ -106,18 +108,13 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
   }
 
   @override
-  Future<void> sendLCDDoubleString(
-      {required String topText, required String bottomText}) async {
-    Map<String, dynamic> arguments = <String, dynamic>{
-      "topText": topText,
-      "bottomText": bottomText
-    };
+  Future<void> sendLCDDoubleString({required String topText, required String bottomText}) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"topText": topText, "bottomText": bottomText};
     await methodChannel.invokeMethod<void>('sendLCDDoubleString', arguments);
   }
 
   @override
-  Future<void> sendLCDBitmap(dynamic byte,
-      {IminPictureStyle? pictureStyle}) async {
+  Future<void> sendLCDBitmap(dynamic byte, {IminPictureStyle? pictureStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (pictureStyle != null) {
       if (pictureStyle.width != null && pictureStyle.height != null) {
@@ -138,6 +135,6 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
     Map<String, dynamic> arguments = <String, dynamic>{
       "size": size,
     };
-     await methodChannel.invokeMethod<void>('setTextSize', arguments);
+    await methodChannel.invokeMethod<void>('setTextSize', arguments);
   }
 }

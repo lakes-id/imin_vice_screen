@@ -35,6 +35,10 @@ class IminViceScreen {
     return IminViceScreenPlatform.instance.requestOverlayPermission();
   }
 
+  Future<bool?> isDoubleScreenOpen() {
+    return IminViceScreenPlatform.instance.isDoubleScreenOpen();
+  }
+
   Future<void> doubleScreenOpen() {
     return IminViceScreenPlatform.instance.doubleScreenOpen();
   }
@@ -43,16 +47,12 @@ class IminViceScreen {
     return IminViceScreenPlatform.instance.doubleScreenCancel();
   }
 
-  Future<void> sendMsgToViceScreen(String method,
-      {Map<String, dynamic>? params}) {
-    return IminViceScreenPlatform.instance
-        .sendMsgToViceScreen(method, params: params);
+  Future<void> sendMsgToViceScreen(String method, {Map<String, dynamic>? params}) {
+    return IminViceScreenPlatform.instance.sendMsgToViceScreen(method, params: params);
   }
 
-  Future<void> sendMsgToMainScreen(String method,
-      {Map<String, dynamic>? params}) {
-    return IminViceScreenPlatform.instance
-        .sendMsgToMainScreen(method, params: params);
+  Future<void> sendMsgToMainScreen(String method, {Map<String, dynamic>? params}) {
+    return IminViceScreenPlatform.instance.sendMsgToMainScreen(method, params: params);
   }
 
   Future<void> sendLCDCommand(LCDCommand command) {
@@ -63,16 +63,12 @@ class IminViceScreen {
     return IminViceScreenPlatform.instance.sendLCDString(string);
   }
 
-  Future<void> sendLCDMultiString(
-      {required List<String> contents, required List<int> aligns}) {
-    return IminViceScreenPlatform.instance
-        .sendLCDMultiString(contents: contents, aligns: aligns);
+  Future<void> sendLCDMultiString({required List<String> contents, required List<int> aligns}) {
+    return IminViceScreenPlatform.instance.sendLCDMultiString(contents: contents, aligns: aligns);
   }
 
-  Future<void> sendLCDDoubleString(
-      {required String topText, required String bottomText}) {
-    return IminViceScreenPlatform.instance
-        .sendLCDDoubleString(topText: topText, bottomText: bottomText);
+  Future<void> sendLCDDoubleString({required String topText, required String bottomText}) {
+    return IminViceScreenPlatform.instance.sendLCDDoubleString(topText: topText, bottomText: bottomText);
   }
 
   Future<void> sendLCDBitmap(dynamic byte, {IminPictureStyle? pictureStyle}) {

@@ -29,13 +29,11 @@ abstract class IminViceScreenPlatform extends PlatformInterface {
   }
 
   Future<bool?> isSupportMultipleScreen() {
-    throw UnimplementedError(
-        'isSupportMultipleScreen() has not been implemented.');
+    throw UnimplementedError('isSupportMultipleScreen() has not been implemented.');
   }
 
   Future<bool?> checkOverlayPermission() {
-    throw UnimplementedError(
-        'checkOverlayPermission() has not been implemented.');
+    throw UnimplementedError('checkOverlayPermission() has not been implemented.');
   }
 
   Future<void> doubleScreenCancel() {
@@ -43,21 +41,22 @@ abstract class IminViceScreenPlatform extends PlatformInterface {
   }
 
   Future<void> requestOverlayPermission() {
-    throw UnimplementedError(
-        'requestOverlayPermission() has not been implemented.');
+    throw UnimplementedError('requestOverlayPermission() has not been implemented.');
+  }
+
+  Future<bool?> isDoubleScreenOpen() {
+    throw UnimplementedError('isDoubleScreenOpen() has not been implemented.');
   }
 
   Future<void> doubleScreenOpen() {
     throw UnimplementedError('doubleScreenOpen() has not been implemented.');
   }
 
-  Future<void> sendMsgToViceScreen(String method,
-      {Map<String, dynamic>? params}) {
+  Future<void> sendMsgToViceScreen(String method, {Map<String, dynamic>? params}) {
     throw UnimplementedError('sendMsgToViceScreen() has not been implemented.');
   }
 
-  Future<void> sendMsgToMainScreen(String method,
-      {Map<String, dynamic>? params}) {
+  Future<void> sendMsgToMainScreen(String method, {Map<String, dynamic>? params}) {
     throw UnimplementedError('sendMsgToMainScreen() has not been implemented.');
   }
 
@@ -77,18 +76,18 @@ abstract class IminViceScreenPlatform extends PlatformInterface {
     throw UnimplementedError('sendLCDString() has not been implemented.');
   }
 
-  Future<void> sendLCDMultiString(
-      {required List<String> contents, required List<int> aligns}) {
+  Future<void> sendLCDMultiString({required List<String> contents, required List<int> aligns}) {
     throw UnimplementedError('sendLCDMultiString() has not been implemented.');
   }
 
-  Future<void> sendLCDDoubleString(
-      {required String topText, required String bottomText}) {
+  Future<void> sendLCDDoubleString({required String topText, required String bottomText}) {
     throw UnimplementedError('sendLCDDoubleString() has not been implemented.');
   }
+
   Future<void> sendLCDBitmap(dynamic byte, {IminPictureStyle? pictureStyle}) {
     throw UnimplementedError('sendLCDBitmap() has not been implemented.');
   }
+
   Future<void> setTextSize(int size) {
     throw UnimplementedError('setTextSize() has not been implemented.');
   }

@@ -95,6 +95,10 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
                 }
                 result.success(true);
                 break;
+            case "isDoubleScreenOpen":
+                boolean isOpen =  IminViceScreenProvider.getInstance().isDoubleScreenOpen();
+                result.success(isOpen);
+                break;
             //显示副屏
             case "doubleScreenOpen":
                 IminViceScreenProvider.getInstance().showSubDisplay();
