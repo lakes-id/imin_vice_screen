@@ -17,6 +17,8 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
   final methodChannel = const MethodChannel('imin_vice_screen');
   @visibleForTesting
   final viceMethodChannel = const MethodChannel('imin_vice_screen_child');
+  @visibleForTesting
+  final routerCallbackChannel = const MethodChannel('imin_vice_screen_router_callback');
 
   @override
   void initViceChannel(StreamController<MethodCall>? viceStreamController) {
@@ -31,6 +33,13 @@ class MethodChannelIminViceScreen extends IminViceScreenPlatform {
     methodChannel.setMethodCallHandler((MethodCall call) async {
       //主屏channel 每接收到一个事件都放进去流里, 由外部监听
       mainStreamController?.sink.add(call);
+    });
+  }
+
+  @override
+  void initRouterCallbackChannel(StreamController<MethodCall>? routerCallbackStreamController) {
+    routerCallbackChannel.setMethodCallHandler((MethodCall call) async {
+      routerCallbackStreamController?.sink.add(call);
     });
   }
 

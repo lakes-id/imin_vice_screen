@@ -7,8 +7,9 @@ import 'enums.dart';
 import 'imin_vice_screen_platform_interface.dart';
 
 class IminViceScreen {
-  StreamController<MethodCall>? viceStreamController;
   StreamController<MethodCall>? mainStreamController;
+  StreamController<MethodCall>? viceStreamController;
+  StreamController<MethodCall>? routerCallbackStreamController;
   Stream<MethodCall> get mainStream {
     // 创建一个StreamController，用于发送消息给子屏幕
     mainStreamController ??= StreamController<MethodCall>.broadcast();
@@ -21,6 +22,12 @@ class IminViceScreen {
     viceStreamController ??= StreamController<MethodCall>.broadcast();
     IminViceScreenPlatform.instance.initViceChannel(viceStreamController);
     return viceStreamController!.stream;
+  }
+
+  Stream<MethodCall> get routerCallbackStream {
+    routerCallbackStreamController ??= StreamController<MethodCall>.broadcast();
+    IminViceScreenPlatform.instance.initRouterCallbackChannel(routerCallbackStreamController);
+    return routerCallbackStreamController!.stream;
   }
 
   Future<bool?> isSupportMultipleScreen() {

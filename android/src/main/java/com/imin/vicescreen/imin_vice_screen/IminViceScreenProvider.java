@@ -17,6 +17,7 @@ import android.view.WindowManager;
 
 import io.flutter.FlutterInjector;
 import io.flutter.embedding.engine.dart.DartExecutor;
+import io.flutter.plugin.common.MethodChannel;
 
 
 public class IminViceScreenProvider {
@@ -25,6 +26,7 @@ public class IminViceScreenProvider {
     private IminViceScreenPresentation presentation;
     private IFlutterSubCallback iCallback;
     private MediaRouter mediaRouter;
+    private MethodChannel routerCallbackChannel;
 
     public static IminViceScreenProvider getInstance() {
         return Holder.instance;
@@ -35,13 +37,13 @@ public class IminViceScreenProvider {
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void doInit(Activity activity, boolean showSubScreen) {
+    public void doInit(Activity activity, boolean showSubScreen, MethodChannel routerCallbackChannel) {
         currentActivity = activity;
+        this.routerCallbackChannel = routerCallbackChannel;
         mediaRouter = (MediaRouter) activity.getApplicationContext().getSystemService(Context.MEDIA_ROUTER_SERVICE);
-
         //媒体设备监听
         if (mediaRouter != null) {
-//            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
+            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
         }
         if (showSubScreen) {
             showSubDisplay();
@@ -49,23 +51,24 @@ public class IminViceScreenProvider {
     }
 
     private MediaRouter.SimpleCallback mMediaRouterCallback = new MediaRouter.SimpleCallback() {
-        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-        @Override
-        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
-            showSubDisplay();
-        }
-
-        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-        @Override
-        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
-            closeSubDisplay();
-        }
+//        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//        @Override
+//        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
+//            showSubDisplay();
+//        }
+//
+//        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//        @Override
+//        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
+//            closeSubDisplay();
+//        }
 
         @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         @Override
         public void onRoutePresentationDisplayChanged(MediaRouter router, MediaRouter.RouteInfo info) {
-            showSubDisplay();
-
+            if (routerCallbackChannel != null) {
+                routerCallbackChannel.invokeMethod("onRoutePresentationDisplayChanged", null);
+            }
         }
     };
 
@@ -98,11 +101,11 @@ public class IminViceScreenProvider {
             //设置副屏engine需要引入的三方插件库
             Log.d("TAG", "tripPlugins: " + IminViceScreenPlugin.getInstance().getTripPlugins());
             if (IminViceScreenPlugin.getInstance().getTripPlugins() != null) {
-                 IminViceScreenPlugin.getInstance().getTripPlugins().forEach(plugin -> {
-                      if(engine.getPlugins() != null) {
-                          engine.getPlugins().add(plugin);
-                      }
-                 });
+                IminViceScreenPlugin.getInstance().getTripPlugins().forEach(plugin -> {
+                    if (engine.getPlugins() != null) {
+                        engine.getPlugins().add(plugin);
+                    }
+                });
             }
             if (engine != null) {
                 if (engine.getNavigationChannel() != null) {
@@ -170,6 +173,10 @@ public class IminViceScreenProvider {
             presentation.dismiss();
         }
         presentation = null;
+//        if (engine != null) {
+//            engine.destroy();
+//            engine = null;
+//        }
     }
 
     /**

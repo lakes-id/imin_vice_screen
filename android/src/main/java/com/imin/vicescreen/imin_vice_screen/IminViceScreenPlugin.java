@@ -48,6 +48,7 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
     private MethodChannel channel;
     private Context _context;
     private MethodChannel viceScreenChannel;
+    private MethodChannel routerCallbackChannel;
     private static final String TAG = "IminViceScreenPlugin";
     //用于设置副屏 flutterEngine 需要引入的三方插件库
     ArrayList<FlutterPlugin> tripPlugins;
@@ -67,6 +68,7 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_vice_screen");
+        routerCallbackChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_vice_screen_router_callback");
         _context = flutterPluginBinding.getApplicationContext();
         channel.setMethodCallHandler(this);
     }
@@ -96,7 +98,7 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
                 result.success(true);
                 break;
             case "isDoubleScreenOpen":
-                boolean isOpen =  IminViceScreenProvider.getInstance().isDoubleScreenOpen();
+                boolean isOpen = IminViceScreenProvider.getInstance().isDoubleScreenOpen();
                 result.success(isOpen);
                 break;
             //显示副屏
@@ -176,7 +178,7 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
                             } else {
                                 String img = call.argument("bitmap");
                                 Bitmap image = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit().get();
-                                ILcdManager.getInstance(_context).sendLCDBitmap(image);  
+                                ILcdManager.getInstance(_context).sendLCDBitmap(image);
                             }
                             result.success(true);
                         } catch (Exception err) {
@@ -187,7 +189,7 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
                 break;
             case "setTextSize":
                 int size = call.argument("size");
-                ILcdManager.getInstance(_context).setTextSize(size);  
+                ILcdManager.getInstance(_context).setTextSize(size);
                 result.success(true);
                 break;
             default:
@@ -202,8 +204,12 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        channel.setMethodCallHandler(null);
-        viceScreenChannel.setMethodCallHandler(null);
+        if (channel != null) {
+            channel.setMethodCallHandler(null);
+        }
+        if (viceScreenChannel != null) {
+            viceScreenChannel.setMethodCallHandler(null);
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -219,7 +225,7 @@ public class IminViceScreenPlugin implements FlutterPlugin, ActivityAware, Metho
             }
         });
         boolean autoShowSubScreenWhenInit = _context.getResources().getBoolean(R.bool.autoShowSubScreenWhenInit);
-        IminViceScreenProvider.getInstance().doInit(binding.getActivity(), autoShowSubScreenWhenInit);
+        IminViceScreenProvider.getInstance().doInit(binding.getActivity(), autoShowSubScreenWhenInit, routerCallbackChannel);
     }
 
     @Override

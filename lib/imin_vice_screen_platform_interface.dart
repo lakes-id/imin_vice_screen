@@ -68,6 +68,10 @@ abstract class IminViceScreenPlatform extends PlatformInterface {
     throw UnimplementedError('initMainChannel() has not been implemented.');
   }
 
+  void initRouterCallbackChannel(StreamController<MethodCall>? routerCallbackStreamController) {
+    throw UnimplementedError('initRouterCallbackChannel() has not been implemented.');
+  }
+
   Future<void> sendLCDCommand(LCDCommand command) {
     throw UnimplementedError('sendLCDCommand() has not been implemented.');
   }
