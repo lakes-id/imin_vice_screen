@@ -173,10 +173,10 @@ public class IminViceScreenProvider {
             presentation.dismiss();
         }
         presentation = null;
-//        if (engine != null) {
-//            engine.destroy();
-//            engine = null;
-//        }
+        if (engine != null) {
+            engine.destroy();
+            engine = null;
+        }
     }
 
     /**
