@@ -86,6 +86,23 @@ public class IminViceScreenProvider {
 
         }
 
+        // This fires when the Activity is really going away, not on a config change
+        // (that goes through onDetachedFromActivityForConfigChanges instead, which stays
+        // a no-op). The presentation window intentionally uses an overlay window type so
+        // it survives ordinary activity churn, and `engine` is cached across attach/detach
+        // cycles - so without tearing both down here, the secondary display keeps showing
+        // stale content after the app is closed, and the next launch's plugin instance
+        // never rebinds its channel to the leftover engine, leaving it unresponsive.
+        try {
+            closeSubDisplay();
+            if (engine != null) {
+                engine.destroy();
+                engine = null;
+            }
+        } catch (Exception e) {
+
+        }
+        currentActivity = null;
     }
 
     /**
